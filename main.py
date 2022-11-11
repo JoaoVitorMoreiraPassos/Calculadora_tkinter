@@ -13,7 +13,10 @@ class Calculator():
         self.equation = ''
         self.interface()
             
-    def add_num(self, num):   
+    def add_num(self, num):
+        if self.equation:
+            if self.equation[-1] == ')':
+                self.equation += 'x'   
         self.equation += num
         self.input_equation['text'] = self.equation
         self.calc()
@@ -42,23 +45,26 @@ class Calculator():
             temp = int(self.equation[-1])
             self.equation += ','
         except:
+            if self.equation:
+                if self.equation[-1] == ')':
+                    self.equation += 'x'
             self.equation += '0,' 
         self.input_equation['text'] = self.equation
              
-    def add_parenteses(self):
-        abertos = 0
-        fechados = 0
+    def add_parentheses(self):
+        open = 0
+        close = 0
         pos = 0
         for i in self.equation:
             if i == '(':
-                abertos += 1
+                open += 1
                 ṕos = i
             if i == ')':
-                fechados += 1
+                close += 1
 
-        if abertos == fechados or abertos == 0:
+        if open == close or open == 0:
             try:
-                temp = self.equation[pos-1]                    
+                temp = self.equation[-1]                    
                 if temp == ')' or self.isnum(temp) or temp == ',':
                     self.equation += 'x'    
             except:
@@ -118,7 +124,7 @@ class Calculator():
         
         w, h = 60, 60
         img_clean   = PhotoImage(file="imagens/clean.png")
-        img_par     = PhotoImage(file="imagens/parenteses.png")
+        img_par     = PhotoImage(file="imagens/parentheses.png")
         img_percent = PhotoImage(file="imagens/percent.png"   )
         img_div     = PhotoImage(file="imagens/div.png"       )
         img_7       = PhotoImage(file="imagens/7.png"         )
@@ -132,14 +138,14 @@ class Calculator():
         img_1       = PhotoImage(file="imagens/1.png"         )
         img_2       = PhotoImage(file="imagens/2.png"         )
         img_3       = PhotoImage(file="imagens/3.png"         )
-        img_plus    = PhotoImage(file="imagens/pluss.png"     )
+        img_plus    = PhotoImage(file="imagens/plus.png"     )
         img_equal   = PhotoImage(file="imagens/equal.png"     )
         img_sep     = PhotoImage(file="imagens/sep.png"       )
         img_back    = PhotoImage(file="imagens/back.png"      )
         img_0       = PhotoImage(file="imagens/0.png"         )
         
         clean   = Button(self.win, image=img_clean  , bg='#000', activebackground="#000",anchor="center", borderwidth=0, highlightbackground="#000", border=0   , bd=0,command=self.clean)
-        paren   = Button(self.win, image=img_par    , bg='#000', activebackground="#000",anchor="center", borderwidth=0, highlightbackground="#000", border=0   , bd=0, command=self.add_parenteses)
+        paren   = Button(self.win, image=img_par    , bg='#000', activebackground="#000",anchor="center", borderwidth=0, highlightbackground="#000", border=0   , bd=0, command=self.add_parentheses)
         percent = Button(self.win, image=img_percent, bg='#000', activebackground="#000",anchor="center", borderwidth=0, highlightbackground="#000", border=0   , bd=0, command=partial(self.add_operation, '%'))
         div     = Button(self.win, image=img_div    , bg='#000', activebackground="#000",anchor="center", borderwidth=0, highlightbackground="#000", border=0   , bd=0, command=partial(self.add_operation, '/'))
         
